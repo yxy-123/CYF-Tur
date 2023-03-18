@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>对话 | 第2节 | Create Your Frisk 基础教程</title>
+  <link rel="icon" href="/assets/icon.ico" />
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="../assets/highlight/styles/a11y-dark.min.css">
+  <script src="../assets/highlight/highlight.min.js"></script>
+  <script src="../assets/highlight/languages/lua.min.js"></script>
+</head>
+
+<body>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <div class="row">
+    <ul>
+      <li><a href="/index.html">主页</a></li>
+      <li><a target="_self" href="/section/section-1.html">基础-1</a></li>
+      <li class="active"><a target="_self" href="/section/section-2.html">基础-2</a></li>
+      <li><a target="_self" href="/section/section-3.html">基础-3</a></li>
+      <li><a target="_self" href="/section/section-4.html">基础-4</a></li>
+      <li><a target="_self" href="/section/section-5.html">基础-5</a></li>
+      <li><a target="_self" href="/section/section-6.html">基础-6</a></li>
+      <li><a target="_self" href="/section/section-7.html">基础-7</a></li>
+      <li><a target="_self" href="/section/section-8.html">基础-8</a></li>
+      <li><a target="_self" href="/section/q-a.html">常见问题</a></li>
+  </div>
+  <div class="main">
+    <h1>2 ———————————对话！</h1>
+    <p>嘿，大家好，我想死你们了…………………..算了，进入主题</p>
+    <br />
+    <h2>蛙吉特蹦蹦跳跳地过来了</h2>
+    <br />
+    <p>每到战斗时，对话框都会有一窜文本。比如：</p>
+    <ul style="list-style-type: '* ';">
+      <li>蛙吉特蹦蹦跳跳地过来了</li>
+      <li>你感觉sans 懒惰 罪恶爬上了你的脊椎</li>
+      <li>你又双叒叕丢了</li>
+    </ul>
+    <p>等等</p>
+    <br />
+    <p>而我们的战斗的开场白却是<q>Poseur strikes a pose!</q></p>
+    <p>我们改一改，找到这一行(<span style="color: yellow;">encounter.lua</span>)</p>
+    <pre><code>
+encountertext = "Poseur strikes a pose!"
+  </code></pre>
+    <p>让我们修改一下ta</p>
+  <pre><code>
+encountertext = "I AM HERE!"
+  </code></pre>
+  <img src= "/assets/image/section2/i-am-there.png" alt= "" title= "至于什么不能写中文的话...你自己知道；）"/>
+    <p>进去游戏一看发现开场白改了<br />
+    怎么样？<br />
+    但是我们意识到一个问题，这样只能改开头啊！<br />
+    我当然想到了这点</p>
+      <br />
+    <p>下面我来介绍一个函数 <br />
+    什么？你害怕了？ <br /> 
+    没关系，这不是数学 </p>
+    <br />
+    
+    <p>你可以把他当成一个功能：</p>
+    <pre><code>BattleDialog({"你想说的话"})</code></pre>
+    
+    <p>进入怪物的脚本，我们赶快再act2中加入：</p>
+      <pre><code>
+elseif command == "ACT 2" then
+    BattleDialog("OK!")
+  </code></pre>
+    <p>结果发现我们失败了，为什么呢，我们看看下面居然还有一个行：BattleDialog({"You selected " .. command .. "."})</p>
+    <br />
+    <p>我们把它删掉<br />惊奇的发现！成功了！</p>
+    <br />
+    <p>不过每回合对话框的内容都会变，所以我们得指定怎么变</p>
+    <br />
+    <p>找到这个</p>
+  <pre><code>
+comments = {"Smells like the work\rof an enemy stand.", "Poseur is posing like his\rlife depends on it.", "Poseur's limbs shouldn't be\rmoving in this way."}
+  </code></pre>
+    comments是一个关键变量，和encountertext一样，由CYF引擎识别 <br />
+
+    comments代表每回合后随机显示的对话(当然，可以多次改)<br />
+  <br />
+  <br />
+    你肯定会好奇<b>work\rof</b>这么一个东西，难道他会输出work\rof吗？
+<br /><br />
+    可是在游戏中输出的是
+<pre><code>
+work
+of
+</code></pre>
+    所以，\r是换行。接下来你还会遇到\n也是换行
+<br /><br />
+    <p>至于，有什么区别，演示一下</p>
+<img src= "/assets/image/section2/ok__a.png" alt= "" title= "两个*"/>
+    <p>这是/n的换行</p>
+<img src="/assets/image/section2/ok_a.png" alt="" title="第一行有*而第二行没" />
+    <p>这是/r的换行</p>
+<br />
+    理解了吧
+<br />
+    趁者这个劲，我们把敌人对话也完善一下
+<br /><br />
+    找到这个：
+    <pre><code>
+randomdialogue = {"Random\nDialogue\n1.", "Random\nDialogue\n2.", "Random\nDialogue\n3."}
+  </code></pre>
+    看看，我们现在就遇到\n了，不过别担心，我们会了
+<br />
+    我们再稍微修改一下
+<br />
+    （ps：当初这里是视频演示，不过影响不大，你们可以自由发挥）
+<br />
+<br />
+    再提一点，上次我们的
+<pre><code>
+currentdialogue = {"xxxxxxx"}
+  </code></pre>
+    <p>是指定下一轮会说什么，不再都说</p>
+<br /><br />
+
+    <h2>暗黑中二重金属炫彩小王子</h2>
+    <p>在打小羊是，对话框明显中二了很多，有些抖动，彩色，飘出残影的文字 <br />
+    让我们的战斗也中二一会（滑稽）<br />
+    文本指令通常都是以</p>
+ <pre><code>
+"[这里面是文本指令]"
+  </code></pre>
+    的形式出现的
+
+<br /><br /><br />
+    我们啥也不说了，先试试
+    <pre><code>
+BattleDialog({"[noskip][color:ff0000][alpha:77][effect:rotate,10]Hopes [w:10] And Dreams"})
+      </code></pre>
+<img src= "/assets/image/section2/hope-and-dreams.png" alt= "" title= "很酷，对吧？"/>
+
+    <p>哇，虽然没小王子那么中二炫酷，但是至少到了一个效果<br />
+    简单讲一下吧</p>
+    <ul>
+      <li><b>[noskip]</b>代表不能跳过</li>
+      <li><b>[color:ff0000]</b>这个代表颜色ff0000代表红色</li>
+      <li><b>[effect:rotate,10]</b>这个是效果功能，rotate是旋转，10代表强度</li>
+      <li><b>[w:10]</b>这是等待，10是10毫秒</li>
+    </ul>
+    <br />
+    <p>那么今天就到这，下次再见</p>
+  </div>
+</body>
+
+</html>

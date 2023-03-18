@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>常见问题 | Create Your Frisk 基础教程</title>
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="../assets/highlight/styles/a11y-dark.min.css">
+  <script src="../assets/highlight/highlight.min.js"></script>
+  <script src="../assets/highlight/languages/lua.min.js"></script>
+  </head>
+  
+  <body>
+    <script>
+      hljs.highlightAll();
+    </script>
+    <div class="row">
+      <ul>
+        <li><a href="/index.html">主页</a></li>
+        <li><a target="_self" href="/section/section-1.html">基础-1</a></li>
+        <li><a target="_self" href="/section/section-2.html">基础-2</a></li>
+        <li><a target="_self" href="/section/section-3.html">基础-3</a></li>
+        <li><a target="_self" href="/section/section-4.html">基础-4</a></li>
+        <li><a target="_self" href="/section/section-5.html">基础-5</a></li>
+        <li><a target="_self" href="/section/section-6.html">基础-6</a></li>
+        <li><a target="_self" href="/section/section-7.html">基础-7</a></li>
+        <li><a target="_self" href="/section/section-8.html">基础-8</a></li>
+        <li class="active"><a target="_self" href="/section/q-a.html">常见问题</a></li>
+    </div>
+    <div class="main">
+    <h2>想使用自己的语音怎么办</h2>
+    <p>答：创建 Sounds / Voices文件夹。<br />还有，必须是wav</p>
+    
+    <h2>关于切歌</h2>
+    <p>很简单：</p>
+    <pre><code>
+Audio.Stop()
+Audio.LoadFile("xxx")
+    </code></pre>
+    <br />
+    <h2>调整战斗框</h2>
+    <pre><code>Arena.Resize(x,y)</code></pre>
+    <br />
+    <h2>角色说话没有声音，像个憨憨</h2>
+    <p>首先，我们得用到<span style="color: yellow;">文本指令</span></p>
+    <p>在要说的话前加上[voice:]，比如[voice:v_sans],[voice:v_flowey]</p>
+    <br />
+      
+    <h2>我没有Encounter Skeleton文件怎么办？</h2>
+    <p>额，不可能没有的呀，你可以找一下Encounter Skeleton有没有</p>
+    </div>
+</body>
+</html>

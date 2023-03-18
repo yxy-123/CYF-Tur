@@ -1,0 +1,88 @@
+@font-face {
+  font-family: main;
+  src: url(/assets/determination_mono.ttf);
+}
+* {
+  color: rgb(255, 255, 255);
+}
+body {
+  background-color: rgb(17, 17, 17);
+  font-family: main;
+  font-size: 20px;
+}
+pre {
+  font-size: 20px;
+  margin: 10px;
+  overflow-x:visible;
+}
+a {
+  color:rgb(0, 195, 255);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+a:hover {
+  color: aquamarine;
+  text-decoration: underline;
+}
+h1 {
+  font-size: 40px;
+}
+h2 {
+  border-left: 3px solid yellow;
+  padding: 3px;
+}
+a,p,span,ul {
+  font-size: 20px;
+}
+a,p,h1,h2,h3,h4,h5,h6,ul {
+  font-family: main;
+  padding: 5px 3px;
+}
+b {
+  color: rgb(255, 43, 43);
+}
+.row ul {
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  height: 100%;
+  width: 9%;
+  list-style-type: none;
+  border-right: 3px solid gray;
+}
+.row ul li {
+  padding: 5px;
+  transition: all 0.2s;
+}
+.row ul li:hover {
+  background-color: rgb(94, 94, 94);
+}
+.main {
+  margin-left: 12%;
+}
+img[alt="看什么"] {
+  opacity: 0;
+  transition: all 1s;
+}
+img[alt="看什么"]:hover {
+  opacity: 1;
+}
+.active {
+  background-color: rgba(0, 255, 242, 0.164);
+}
+@media screen and (max-width: 992px) {
+  .row ul{
+    display: flex;
+    height: 7%;
+    width: 100%;
+    border-bottom: 3px solid gray;
+    position: sticky;
+    overflow-x: auto;
+  }
+  .row ul li {
+    font-size: 12px;
+  }
+  .main {
+    padding-top: 0;
+  }
+}
