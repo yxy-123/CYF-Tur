@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>起步 | 第1节 | Create Your Frisk 基础教程</title>
+  <link rel="icon" href="/assets/icon.ico" />
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="../assets/highlight/styles/a11y-dark.min.css">
+  <script src="../assets/highlight/highlight.min.js"></script>
+  <script src="../assets/highlight/languages/lua.min.js"></script>
+</head>
+<body>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <div class="row">
+    <ul>
+      <li><a href="/index.html">主页</a></li>
+      <li class="active"><a target="_self" href="/section/section-1.html">基础-1</a></li>
+      <li><a target="_self" href="/section/section-2.html">基础-2</a></li>
+      <li><a target="_self" href="/section/section-3.html">基础-3</a></li>
+      <li><a target="_self" href="/section/section-4.html">基础-4</a></li>
+      <li><a target="_self" href="/section/section-5.html">基础-5</a></li>
+      <li><a target="_self" href="/section/section-6.html">基础-6</a></li>
+      <li><a target="_self" href="/section/section-7.html">基础-7</a></li>
+      <li><a target="_self" href="/section/section-8.html">基础-8</a></li>
+      <li><a target="_self" href="/section/q-a.html">常见问题</a></li>
+    </div>
+  <div class="main">
+  <h1>1———————————起步！</h1>
+  <p>大家好。。。。。。。。。。。。。。emm没错这就是开头，进入主题吧</p>
+  <br />
+  <h2>游戏</h2>
+  <p>在座的应该都是UT粉吧，想必都很想创建自己的Undertale同人游戏</p>
+  <p>当然有2个办法，使用<a target="_blank" href="https://gamemaker.io/zh-CN">GMS</a>或<a target="_blank" href="https://github.com/RhenaudTheLukark/CreateYourFrisk/releases">CYF</a>。我个人推荐CYF因为它可能入门简单</p>
+  <p>不说了，先关门放CYF</p>
+  <br />
+  <p>由于GitHub的release下载很慢（反正我是上不去）推荐使用<a href="http://github-mirror.bugkiller.org/RhenaudTheLukark/CreateYourFrisk/releases" target="_blank" rel="noopener noreferrer">镜像站</a></p> 
+  <p>下载完成后直接解压缩，放到文件夹中</p>
+  <p>你会发现一些文件夹和CYF本体</p>
+  
+  <p>其中有一个名为<b>Documentation CYF 0.6.4</b>的文件夹<br />（ps：现在来修改这个文档的时候CYF已经更新到0.6.6了，不过我个人推荐使用0.6.5）<br />里面是CYF的官方文档，但是是英文的，我们可以看一下</p>
+  <p>接下来试玩一些示例，没问题后继续</p>
+  <br />
+  <p>那么基本的环境就配置完成</p>
+  <p>不过我还要推荐一个东东: VS Code（ps：visual studio code）</p>
+  <p>安装过程我就用文字表达吧</p>
+  <br />
+  <p>点击<a href="http://code.visualstudio.com" target="_blank" rel="noopener noreferrer">此处</a>，选择download</p>
+  <p>安装之后发现是英文，你可能要开始咆哮了:"<b>有木有中文！！！！！！！！！！！！！！！！</b>（以下省略10000个！）”</p>
+  
+  
+  
+  <p>当然有中文。在扩展(Extensions,或 Ctrl+Shift+X)里面输入Chinese，安装扩展后重启即可</p>
+  <p><img src= "/assets/image/section1/vsc-extensions.png" alt= "四方格丢一个格的图标→上面搜索框输入chinese，第一个就是" title= "我觉得您能看得懂的;)"/></p>
+  
+  <p>之后，我们可以正式开始了</p>
+  
+  <h2>开始第一个战斗</h2>
+  <p>官方给出，学习CYF最好的方法就是复制<q title="直译骷髅遭遇战，其实是一个简单的实例" style="text-decoration: underline;">Encounter Skeleton</q>战斗，解析里面的内容</p>
+  <p>那我们复制下来，重命名为<span style="color: yellow;">my fight</span></p>
+  <p>之后试玩一下，之后我们解析文件夹内部</p>
+  <br />
+  
+  <p>打开文件夹发现有很多的文件<del>（屁话！）</del>，那么他们是用来干什么的呢?</p>
+  <ul>
+    <li><b>Audio</b> >>你战斗的音乐</li>
+    <li><b>Sprite</b> >>战斗用的图片</li>
+    <li><b>Lua</b> >>你战斗的脚本<span style="color: yellow;">（重要）</span></li>
+  </ul>
+  <br />
+  <p>打开Lua我们可以看到，有衫个文件夹</p>
+  <ul>
+    <li>Encounters（遭遇脚本）</li>
+    <li> Monsters(怪物脚本)</li>
+    <li>Waves（战斗）</li>
+  </ul>
+  <br />
+  <p>因为CYF需要使用Lua编程，所以我们今天就解决Lua的基本语法</p>
+  <p>先打开Monsters文件夹，发现里面有一个poseur.lua文件<br/>我们打开ta并看到这一行：</p>
+
+  <pre>
+    <code>
+commands = {"Act 1", "Act 2", "Act 3"}
+    </code>
+  </pre>
+  <p>它设置行动里面的内容，改动一下可以看到：</p>
+  <pre>
+    <code>
+commands={"Talk","Act2","Act3"}
+    </code>
+  </pre>
+  <p>再看到这段代码</p>
+  <pre>
+    <code>
+function HandleCustomCommand(command)
+    if command == "ACT 1" then
+        currentdialogue = {"Selected\nAct 1."}
+    elseif command == "ACT 2" then
+        currentdialogue = {"Selected\nAct 2."}
+    elseif command == "ACT 3" then
+        currentdialogue = {"Selected\nAct 3."}
+    end
+    BattleDialog({"You selected " .. command .. "."})
+end
+    </code>
+  </pre>
+  <p>很抱歉这么快就让你看到怎么难的代码。因为我这个是无编程基础也可以观看的，所以我只讲内容</p>
+  <p><span style="color: yellow;">function</span>是定义一个函数（功能），这里定义了<span style="color: yellow;">HandleCustomCommand</span>(command)函数。<br />这是CYF的特殊函数，也就是说，执行ACT时会发生的事</p>
+  
+  <p>if 是条件判断,用人话大概就是:</p>
+  <pre>
+    <code>
+if command == "ACT 1" then --如果command是“ACT1” 那么
+    currentdialogue = {"Selected\nAct 1."}
+elseif command == "ACT 2" then --又如果command是"ACT2" 那么
+    currentdialogue = {"Selected\nAct 2."}
+elseif command == "ACT 3" then
+    currentdialogue = {"Selected\nAct 3."}
+end
+    </code>
+  </pre>  
+  <p>elseif是又如果的意思</p>
+  <p>中间的<code>command == <span style="color: rgb(198,121,91);">“ACT1”</span></code>就是要判断的条件。==是等于的意思</p>
+  
+  <p>同时还有<q><、>、<=、>=</q>等判断语句</p>
+  <br />
+  <p>好，我们再改改</p>
+  <pre>
+    <code>
+function HandleCustomCommand(command)
+    if command == "TALK" then
+        currentdialogue = {"Don't Talk!"}
+    elseif command == "ACT 2" then
+        currentdialogue = {"Selected\nAct 2."}
+    elseif command == "ACT 3" then
+        currentdialogue = {"Selected\nAct 3."}
+    end
+    BattleDialog({"You selected " .. command .. "."})
+end
+    </code>
+  </pre>
+  <p>这里<code>if command == "TALK" then</code>的TALK一定要大写</p>
+      <p>完成！<br/>（emmm,话说，文字改版好像有点内啥）<br />---yxy_123</p>
+</div>
+</body>
+</html>
