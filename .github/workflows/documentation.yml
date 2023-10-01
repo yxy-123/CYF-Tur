@@ -28,6 +28,6 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-		  FOLDER: build
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          FOLDER: build
           BUILD_SCRIPT: npm install && npm run build
