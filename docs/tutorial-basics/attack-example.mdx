@@ -1,0 +1,233 @@
+---
+title: 简单攻击
+description: 相比之前稍微复杂
+sidebar_position: 6
+---
+
+这一期就讲一个简单的攻击
+
+在wave里面新建一个lua，运行攻击的方法就是改encounter文件夹中的encunter.lua里possible_attacks变量，然后在wave您新建的lua里写入：
+
+```lua
+bullet = CreateProjectile('bullet', 12, 2)
+function Update()
+end
+```    
+`CreateProjectile`就是创建一个子弹，跟上的俩参数是：使用的图片，x，y坐标
+Update函数是必不可少的，否则就会报错
+
+
+
+
+## Update函数
+这个函数就是指每帧做什么事情
+
+```lua
+i=0
+function Update()
+    bullet = CreateProjectile('bullet', 12,i)
+    i=i+1
+end
+     
+```
+这个就可以演示：最开始设置i=0，然后每帧创建一个子弹，y值为i，顺便把i加1(实现从上到下释放子弹...?)
+
+然后是移动子弹(Move方法)
+
+```lua
+bullet = CreateProjectile('bullet', 12,1)
+function Update()
+    bullet.Move(0,1)
+end
+```
+      
+你可能会想这么写：
+
+```lua
+function Update()
+    bullet = CreateProjectile('bullet', 12,1)
+    bullet.Move(0,1)
+end
+```
+      
+但是，**木大！**
+因为每一个只上升了1像素，为什么呢，因为它每次更新的时候都刷掉了以前那个bullet的控制权（？）
+正确写法：
+
+```lua
+bullets={}
+function Update()
+    local bullet = CreateProjectile('bullet', 12,1)
+    table.insert(bullets, bullet)
+    for i=1,#bullets do
+        bullets[i].Move(0,1)
+    end
+end
+   
+   ```
+解释：先创建了一个表，名叫 *bullets* (注意加了s)，然后每次循环创建一个`bullet`变量，并把它插入到这个表里（因为我加了local 所以每次创建的bullet变量都是不同的），最后根据表长度分别给每给子弹move1
+
+加工一下：
+
+```lua
+j=-100
+bullets={}
+function Update()
+    local bullet = CreateProjectile('bullet', j,-60)
+    table.insert(bullets, bullet)
+    j=j+1
+    for i=1,#bullets do
+        bullets[i].Move(0,1)
+    end
+end
+```
+      
+无缝攻击玩毛线（雾）
+
+
+
+
+所以每一次生成要随机啊
+
+```lua
+j=-100
+bullets={}
+function Update()
+    if math.random(1,5)==1 then
+        local bullet = CreateProjectile('bullet', j,-60)
+        table.insert(bullets, bullet)
+    end
+    j=j+1
+    for i=1,#bullets do
+        bullets[i].Move(0,1)
+    end
+end
+```
+
+`math.random`就是生成随机数的，这里面是生成1到5的数字，如果=1的话就生成子弹（此攻击看欧气，非酋直接爆炸）
+
+
+
+
+定时生成，每30帧生成一次
+
+```lua
+j=-100
+spawn=0
+bullets={}
+function Update()
+    if spawn==30 then
+        local bullet = CreateProjectile('bullet', j,-60)
+        table.insert(bullets, bullet)
+        spawn=0
+    end
+    spawn=spawn+1
+    j=j+1
+    for i=1,#bullets do
+        bullets[i].Move(0,1)
+    end
+end
+```
+定时转向：
+
+```lua
+j=-100
+addj=1
+spawn=0
+bullets={}
+function Update()
+    if spawn==30 then
+        local bullet = CreateProjectile('bullet', j,-60)
+        table.insert(bullets, bullet)
+        spawn=0
+    end
+    spawn=spawn+1
+
+    if j==50 then
+        addj=-1
+    elseif j==-101 then
+        addj=1
+    end
+    j=j+addj
+    for i=1,#bullets do
+        bullets[i].Move(0,1)
+    end
+end
+```
+
+随机定时转向：
+
+```lua
+j=-100
+addj=1
+spawn=0
+bullets={}
+function Update()
+    if spawn==30 then
+        local bullet = CreateProjectile('bullet', j,-60)
+        table.insert(bullets, bullet)
+        spawn=0
+    end
+    spawn=spawn+1
+    // highlight-next-line
+    if j>=50 then
+        addj=math.random(-3,-0.1)
+    // highlight-next-line
+    elseif j<=-101 then
+        addj=math.random(0.1,3)
+    end
+    j=j+addj
+    for i=1,#bullets do
+        bullets[i].Move(0,1)
+    end
+end
+   ``` 
+注意13，15行
+
+
+
+
+速度随机：
+
+```lua
+bullets[i].Move(0,math.random(1,5))
+```
+上面错误做法❌  
+下面正确做法：
+
+```lua
+j=-100
+addj=1
+spawn=0
+bullets={}
+function Update()
+    if spawn==30 then
+        local bullet = CreateProjectile('bullet', j,-60)
+        table.insert(bullets, bullet)
+        bullet.SetVar("speed",math.random(1,5))
+        spawn=0
+    end
+    spawn=spawn+1
+    
+    if j>=50 then
+        addj=math.random(-3,-0.1)
+    elseif j<=-101 then
+        addj=math.random(0.1,3)
+    end
+    j=j+addj
+    for i=1,#bullets do
+        bullets[i].Move(0,bullets[i].GetVar("speed"))
+    end
+end
+```
+
+其中，SetVar和GetVar分别是创建一个属性（简单理解）其中speed就是一个，把每个子弹初始化时都设置一个speed属性为随机（SetVar），每次移动的时候就会用到（GetVar）
+
+
+
+
+
+
+CYF教程（入门篇）正式完结，等到了暑假，我会出进阶篇，希望大家那时候多支持！
+
+不过11号后，如果有问题，找我可能也没用（因为我80%不在），而官方文档又看不懂，所以在这里推荐b站用户“ssxzzyy9”发布的CYF0.63汉化文档（下载地址看置顶评论），如果有差异，请以自己的CYF版本为准

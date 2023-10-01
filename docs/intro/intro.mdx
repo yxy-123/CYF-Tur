@@ -1,0 +1,146 @@
+---
+sidebar_position: 1
+---
+# 起步
+
+在该文你将会知道：
+
+* 什么是cyf
+* cyf需要的工具
+* 通过官方实例制作第一场战斗
+
+---
+
+## 小引入
+
+在座的应该都是UT粉吧，想必都很想创建自己的Undertale同人游戏
+
+当然有2个办法，使用[GMS](https://gamemaker.io/zh-CN)或[CYF](https://github.com/RhenaudTheLukark/CreateYourFrisk/releases)。我个人推荐CYF因为它可能入门简单
+
+不说了，先关门放CYF
+
+## 什么是CYF
+
+[CYF](https://github.com/RhenaudTheLukark/CreateYourFrisk)(**Create Your Frisk**)是基于Unity引擎制作，通过Lua编程语言实现Undertale同人战斗的引擎
+
+通过CYF，你可以实现Undertale战斗中几乎所有功能。基于扩展性高的Lua语言，你可以制作出富有挑战性、攻击丰富的同人战斗战斗
+
+## 使用CYF需要的工具
+
+- **CYF本体**（此处仅提供windows端）：[Github](https://github.com/RhenaudTheLukark/CreateYourFrisk/releases "github的release页面") [蓝奏云（版本v0.6.5）](https://wwoe.lanzouj.com/iHJRv1ab9lzi "相对较快速")。若是更新又不想下载慢的，可以使用油猴脚本+Github高速下载脚本，具体方法请自行查阅
+- **文本编辑器**，可以编辑Lua代码就没问题，强烈建议[Sublime Text3](https://www.sublimetext.com/3)，[VSCode](https://code.visualstudio.com/download)，支持lua语法高亮及提示，[Lua](https://luabinaries.sourceforge.net/download.html)的idle也没问题~~（只是看着不舒服）
+
+  :::tip 小提示
+  如果你使用的是VSCode，初次安装完之后节目显示的是英文，你可以按下 `Ctrl+Shift+X` 或者 左边侧栏的*“扩展”*，在搜索框搜索Chinese，在下方找到语言包扩展，安装完重启即可
+  ![img](vsc-install-ext.png)
+  :::
+
+## CYF文件结构
+
+解压完之后，我们会发现以下东西：
+
+```bash
+Create Your Frisk
+├── Create Your Frisk x.x.x_Data 
+├── Default
+├── Documentation CYF x.x.x  # --官方文档
+├── Mods  # --Mods文件夹，加mod都在这
+├── Mono
+├── Create Your Frisk x.x.x.exe # --可执行程序，各平台的可执行程序会有所不同
+├── UnityCrashHandler64.exe
+├── UnityPlayer.dll
+└── WinPixEventRuntime.dll
+```
+
+## 开始你的第一个战斗
+
+官方给出，学习CYF最好的方法就是复制Encounter Skeleton战斗，解析里面的内容
+
+那我们复制下来，重命名为my fight
+
+之后试玩一下，之后我们解析文件夹内部
+
+```bash
+├──Audio # >>你战斗的音乐
+├──Sprite # >>战斗用的图片
+├──Lua # >>你战斗的脚本（重要）
+│   ├──Encounters # >>遭遇脚本
+│   ├──Monsters #  >>怪物脚本
+│   └──Waves # >>战斗脚本
+```
+
+因为CYF需要使用Lua编程，所以我们今天就解决Lua的基本语法
+
+先打开 `Monsters` 文件夹，发现里面有一个 `poseur.lua`文件
+我们打开ta并看到这一行：
+
+```lua
+commands = {"Act 1", "Act 2", "Act 3"}
+```
+
+它设置行动里面的内容，改动一下可以看到：
+
+```lua
+  commands={"Talk","Act2","Act3"}
+```
+
+再看到这段代码：
+
+```lua
+function HandleCustomCommand(command)
+    if command == "ACT 1" then
+        currentdialogue = {"Selected\nAct 1."} 
+    elseif command == "ACT 2" then
+        currentdialogue = {"Selected\nAct 2."}
+    elseif command == "ACT 3" then
+        currentdialogue = {"Selected\nAct 3."}
+    end
+    BattleDialog({"You selected " .. command .. "."}) 
+end
+```
+
+很抱歉这么快就让你看到怎么难的代码。因为我这个是无编程基础也可以观看的，所以我只讲内容
+
+
+**function**是定义一个函数（功能），这里定义了`HandleCustomCommand(command)`函数。
+这是CYF的特殊函数，也就是说，执行ACT时会发生的事
+
+`if` 是条件判断,用人话大概就是:
+
+```lua
+if command == "ACT 1" then --如果command是“ACT1” 那么
+    currentdialogue = {"Selected\nAct 1."}
+elseif command == "ACT 2" then --又如果command是"ACT2" 那么
+    currentdialogue = {"Selected\nAct 2."}
+elseif command == "ACT 3" then
+    currentdialogue = {"Selected\nAct 3."}
+end
+```
+
+
+`elseif`是又如果的意思
+
+中间的 `command ==“ACT1”`就是要判断的条件。==是等于的意思
+
+同时还有`<`、`>`、`<=`、`>=`等判断语句
+
+好，我们再改改
+
+```lua
+function HandleCustomCommand(command)
+    if command == "TALK" then
+        currentdialogue = {"Don't Talk!"}
+    elseif command == "ACT 2" then
+        currentdialogue = {"Selected\nAct 2."}
+    elseif command == "ACT 3" then
+        currentdialogue = {"Selected\nAct 3."}
+    end
+    BattleDialog({"You selected " .. command .. "."})
+end
+```
+
+
+这里 `if command == "TALK" then`的TALK一定要大写
+
+完成！
+（emmm,话说，文字改版好像有点内啥）

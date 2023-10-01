@@ -1,0 +1,115 @@
+---
+title: 动画与攻击
+description: 简单的Sprite动画和攻击
+sidebar_position: 3
+---
+## 动画效果
+
+可能很多人要问了：我怎么让敌人动起来呀？
+
+很简(fu)单(za)，我们开始！
+
+
+
+
+我们要完善一下之前的Frisk维吉尔战~~（改p3的时候没有看p4，原来当时做的是肥肉克斯啊）~~，给加一个动画
+
+
+首先找到一个空白文件，命名为`empty`，把敌人图片更换为：`sprite="empty"`
+
+![](img\animation-and-attack\empty.png)
+
+然后导入素材，我这里假装我有两个图（一个名为 `维吉尔1.jpg`，`维吉尔2.jpg`），然后在脚本文件夹里创建一个动画文件夹
+
+我这里文件夹名字叫anim_model
+
+![](img\animation-and-attack\anim_model.png)
+
+新建一个脚本，叫做`anim_model.lua`
+
+```lua title="anim_model.lua"
+anim_model = CreateSprite("维吉尔")
+anim_model.SetAnimation({"维吉尔1","维吉尔","维吉尔2"},1/2)
+```
+
+大概的意思就是创建一个Sprite，然后设置ta的逐帧动画
+
+然后我们还得在遭遇脚本(`encounter.lua`)开头引用该文件：
+
+```lua
+require "anim_model/anim_model"
+```
+
+## 修改攻击
+
+真正的战斗都是有很多特别的攻击的，所以我们要修改一下攻击
+
+
+`Waves` 文件夹里都是攻击脚本，我们先不理解攻击是怎么做到的，先修改一下
+
+先那 `bullettest_touhou.lua` 这个文件开刀，~~先拿这个绝对不是因为文件名有东方（~~
+
+```lua title="bullettest_touhou,lua"
+if(spawntimer % 30 == 0) then
+    local numbullets = 10
+    for i=1,numbullets+1 do
+        local bullet = CreateProjectile('bullet', 0, yOffset)
+        bullet.SetVar('timer', 0)
+        bullet.SetVar('offset', math.pi * 2 * i / numbullets)
+        bullet.SetVar('negmult', mult)
+        bullet.SetVar('lerp', 0)
+        table.insert(bullets, bullet)
+    end
+    mult = mult + 0.05
+  end
+```
+
+理解一下意思，`spawntimer` 应该是生成弹幕的计时器，我们改一下
+
+```lua
+if(spawntimer % 3 == 0) then --改动了这里
+    local numbullets = 10
+    for i=1,numbullets+1 do
+        local bullet = CreateProjectile('bullet', 0, yOffset)
+        bullet.SetVar('timer', 0)
+        bullet.SetVar('offset', math.pi * 2 * i / numbullets)
+        bullet.SetVar('negmult', mult)
+        bullet.SetVar('lerp', 0)
+        table.insert(bullets, bullet)
+    end
+    mult = mult + 0.05
+  end
+```
+
+再看到：
+
+```lua
+local posx = (70*lerp)*math.sin(timer*bullet.GetVar('negmult') + offset)
+local posy = (70*lerp)*math.cos(timer + offset) + yOffset - lerp*50
+```
+
+posx和posy都是局部变量，那它代表什么呢？
+
+一般的游戏程序猿都知道，一般取名这个变量的都是有关移动的 
+
+:::info 信息
+(pos:即position，"位置"英文名缩写)
+:::
+
+我们仔细看看，这是关于移动速度的，我们改一改
+
+```lua 
+local posx = (170*lerp)*math.sin(timer*bullet.GetVar('negmult') + offset) --上面的70改为170
+local posy = (170*lerp)*math.cos(timer + offset) + yOffset - lerp*50
+```
+
+关于测试的，我们可以在遭遇脚本改一下，达到只用一个攻击
+
+```lua
+nextwaves = { possible_attacks[math.random(#possible_attacks)] }  --修改前
+
+nextwaves = {"bullettest_touhou"}  --修改后
+```
+
+好了，开始吧，~~玩游戏要笑着玩~~
+![](img\animation-and-attack\attack-toutou.png)
